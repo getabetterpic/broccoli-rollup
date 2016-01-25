@@ -11,16 +11,16 @@ function Rollup(inputNode, options) {
   if (!(this instanceof Rollup)) {
     return new Rollup(inputNode, options);
   }
-  
+
   if (!options || !options.rollup.dest || !options.inputFiles) {
     throw new Error('inputFiles and rollup.dest options are required');
   }
-  
+
   CachingWriter.call(this, [inputNode], {
     inputFiles: options.inputFiles,
     annotation: options.annotation
   });
-  
+
   this.inputFiles = options.inputFiles;
   this.rollupOptions = options.rollup;
   this.rollupEntry = null;
@@ -29,11 +29,17 @@ function Rollup(inputNode, options) {
 
 Rollup.prototype.build = function() {
   if (!this.rollupEntry || !this.rollupDest) {
-    this.rollupEntry = path.join(this.inputPaths[0], this.rollupOptions.entry);
+    var inputPath;
+    if (this.inputPaths && typeof this.inputPaths === 'string') {
+      inputPath = this.inputPaths
+    } else {
+      inputPath = this.inputPaths[0]
+    }
+    this.rollupEntry = path.join(inputPath, this.rollupOptions.entry);
     this.rollupDest =  path.join(this.outputPath, this.rollupOptions.dest);
   }
-  
-  this.rollupOptions.entry = this.rollupEntry 
+
+  this.rollupOptions.entry = this.rollupEntry
   this.rollupOptions.dest = this.rollupDest;
 
   return rollup(this.rollupOptions).then(function(bundle) {

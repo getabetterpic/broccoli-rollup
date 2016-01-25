@@ -13,7 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "broccoli-caching-writer": "^2.2.0",
-    "rollup": "^0.21.0"
+    "rollup": "^0.25.1"
   },
   "devDependencies": {
     "broccoli-fixture": "^0.1.0",
